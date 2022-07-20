@@ -15,7 +15,7 @@ default_intents = discord.Intents.default()
 default_intents.members = True
 
 # The bot's client with intents
-bot = commands.Bot(command_prefix="!", intents=default_intents)
+bot = commands.Bot(command_prefix='!')
 
 # Token setup
 load_dotenv(dotenv_path="config")
@@ -47,8 +47,8 @@ def getBitcoinCurrency():
 
 # ----------- COMMANDS (not working for now) -----------
 
-@bot.command(name="bitcoin")
-async def bitcoinCurrency(ctx, devise: string):
+@bot.command()
+async def bitcoin(ctx, devise: string):
     print("bitcoin command : command called")
     d = devise.lower()
     a = 0
@@ -57,20 +57,24 @@ async def bitcoinCurrency(ctx, devise: string):
     print("bitcoin command : data receveid")
     if d == "eur":
         print("bitcoin command : eur")
-        await ctx.channel.send("Le bitcoin vaut actuellement " + a + " euros.")
+        await ctx.send("Le bitcoin vaut actuellement " + a + " euros.")
     if d == "usd":
         print("bitcoin command : usd")
-        await ctx.channel.send("Le bitcoin vaut actuellement " + b + " dollars americain.")
+        await ctx.send("Le bitcoin vaut actuellement " + b + " dollars americain.")
     else:
         print("bitcoin command : other choice")
-        await ctx.channel.send("Veillez spécifier la devise. (eur = euro / usd = dollard américain)")
+        await ctx.send("Veillez spécifier la devise. (eur = euro / usd = dollard américain)")
 
 
-@bot.command(name="aide")
+@bot.command()
 async def aide(ctx):
     print("help command : called")
     await ctx.send("Test")
 
+
+@bot.command()
+async def foo(ctx, arg):
+    await ctx.send(arg)
 
 # ----------- EVENTS -----------
 
