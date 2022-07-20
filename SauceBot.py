@@ -1,12 +1,12 @@
-import string
-
 import discord
 from discord.ext import commands
 import urllib.request as urllib2
 import json
+import string
+from dotenv import load_dotenv
+import os
 
 # CONSTANTS
-TOKEN = "OTk4OTg5MDAyNTIwNjc0Mzc2.GJ6ls_.rIG-0Cal988m8hjuqo_ICvViYMRTNS-Y5BBY1A"
 SYS_CHAN = 609918100602748929
 MEMBER_ID = 177514021992398849
 
@@ -16,6 +16,9 @@ default_intents.members = True
 
 # The bot's client with intents
 bot = commands.Bot(command_prefix="!", intents=default_intents)
+
+# Token setup
+load_dotenv(dotenv_path="config")
 
 
 # Get the bitcoin's curency in EUR & USD with coindesk's API
@@ -116,4 +119,4 @@ async def on_message(message):
 
 
 # Start the bot with secret token
-bot.run(TOKEN)
+bot.run(os.getenv("TOKEN"))
