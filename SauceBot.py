@@ -2,9 +2,9 @@ import discord
 from discord.ext import commands
 import urllib.request as urllib2
 import json
-import string
 from dotenv import load_dotenv
 import os
+import string
 
 # CONSTANTS
 SYS_CHAN = 609918100602748929
@@ -15,7 +15,7 @@ default_intents = discord.Intents.default()
 default_intents.members = True
 
 # The bot's client with intents
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix="!", intents=default_intents)
 
 # Token setup
 load_dotenv(dotenv_path="config")
@@ -45,37 +45,6 @@ def getBitcoinCurrency():
     return bitcoin_p_eur, bitcoin_p_usd
 
 
-# ----------- COMMANDS (not working for now) -----------
-
-@bot.command()
-async def bitcoin(ctx, devise: string):
-    print("bitcoin command : command called")
-    d = devise.lower()
-    a = 0
-    b = 0
-    (a, b) = getBitcoinCurrency(d)
-    print("bitcoin command : data receveid")
-    if d == "eur":
-        print("bitcoin command : eur")
-        await ctx.send("Le bitcoin vaut actuellement " + a + " euros.")
-    if d == "usd":
-        print("bitcoin command : usd")
-        await ctx.send("Le bitcoin vaut actuellement " + b + " dollars americain.")
-    else:
-        print("bitcoin command : other choice")
-        await ctx.send("Veillez spécifier la devise. (eur = euro / usd = dollard américain)")
-
-
-@bot.command()
-async def aide(ctx):
-    print("help command : called")
-    await ctx.send("Test")
-
-
-@bot.command()
-async def foo(ctx, arg):
-    await ctx.send(arg)
-
 # ----------- EVENTS -----------
 
 
@@ -83,8 +52,9 @@ async def foo(ctx, arg):
 @bot.event
 async def on_ready():
     game = discord.Game("Dans la Sauce")
-    await bot.change_presence(status=discord.Status.idle, activity=game)
+    await bot.change_presence(status=discord.Status.online, activity=game)
     print("bot ready")
+    print("Discord version : " + discord.__version__)
 
 
 # -------- /!\ Not tested /!\ --------
@@ -113,13 +83,27 @@ async def on_voice_state_update(member, before, after):
 
 
 # When a message is posted by a member
-@bot.event
-async def on_message(message):
-    if message.content.lower() == "ping":
-        await message.channel.send("pong")
-        await message.author.send("Tu aimes le ping-pong ?")
-    else:
-        return
+#@bot.event
+#async def on_message(message):
+#    if message.content.lower() == "ping":
+#        await message.channel.send("pong")
+#        await message.author.send("Tu aimes le ping-pong ?")
+#    else:
+#        return
+
+
+# ----------- COMMANDS (not working for now) -----------
+
+@bot.command()
+async def bitcoin(ctx):
+    (a, b) = getBitcoinCurrency()
+    await ctx.send("Le bitcoin vaut actuellement " + str(a) + " euros et " + str(b) +  " dollars americain.")
+
+
+@bot.command()
+async def aide(ctx):
+    print("help command : called")
+    await ctx.send("Test")
 
 
 # Start the bot with secret token
